@@ -19,7 +19,7 @@ run: os-image.bin
 	make clean
 
 clean:
-	rm -rf ${OBJ} os-image.bin
+	rm -rf boot/boot.o ${OBJ} os-image.bin
 
 git-commit: clean
 	git add .

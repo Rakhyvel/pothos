@@ -2,7 +2,7 @@ C_SOURCES = $(wildcard boot/*.c devices/*.c lib/*.c)
 HEADERS = $(wildcard boot/*.h devices/*.h lib/*.h)
 OBJ = ${C_SOURCES:.c=.o}
 
-os-image.bin: ${OBJ}
+os-image.bin: boot/boot.o ${OBJ}
 	i686-elf-gcc -T boot/linker.ld -o os-image.bin -ffreestanding -O2 -nostdlib boot/boot.o ${OBJ} -lgcc
 
 boot/kernel.o: ${OBJ}

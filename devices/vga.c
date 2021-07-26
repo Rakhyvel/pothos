@@ -38,11 +38,19 @@ void VGA_TerminalPutEntryAt(char c, uint8_t color, size_t x, size_t y)
  
 void VGA_TerminalPutChar(char c) 
 {
-	VGA_TerminalPutEntryAt(c, terminal_color, terminal_column, terminal_row);
-	if (++terminal_column == VGA_WIDTH) {
-		terminal_column = 0;
-		if (++terminal_row == VGA_HEIGHT)
-			terminal_row = 0;
+    if(c == '\n') {
+        ++terminal_row;
+        terminal_column = 0;
+    } else {
+        VGA_TerminalPutEntryAt(c, terminal_color, terminal_column, terminal_row);
+        if (++terminal_column > VGA_WIDTH) {
+			++terminal_row;
+            terminal_column = 0;
+        }
+    }
+	if(terminal_row > VGA_HEIGHT) {
+		memcpy(terminal_buffer, terminal_buffer + VGA_WIDTH, 4 * VGA_WIDTH * VGA_HEIGHT - 2);
+		terminal_row--;
 	}
 }
  

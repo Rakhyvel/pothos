@@ -7,3 +7,20 @@ size_t strlen(const char* str)
 		len++;
 	return len;
 }
+
+void* memcpy(void *dst_, const void *src_, size_t size)
+{
+	unsigned char *dst = dst_;
+	const unsigned char *src = src_;
+
+	if (dst < src) {
+    	while (size-- > 0)
+        	*dst++ = *src++;
+    } else {
+    	dst += size;
+    	src += size;
+    	while (size-- > 0)
+    	*--dst = *--src;
+    }
+	return dst;
+}

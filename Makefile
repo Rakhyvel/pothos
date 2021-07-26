@@ -22,8 +22,9 @@ clean:
 	rm -rf ${OBJ} os-image.bin
 
 git-commit:
+	make clean
 	git add .
 	git commit -m "$(msg)"
 
 git-push:
-	git push origin master
+	git push origin main

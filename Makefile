@@ -21,8 +21,7 @@ run: os-image.bin
 clean:
 	rm -rf ${OBJ} os-image.bin
 
-git-commit:
-	make clean
+git-commit: clean
 	git add .
 	git commit -m "$(msg)"
 

@@ -1,3 +1,9 @@
+/*	vga.h
+
+	Author: Joseph Shimel
+	Date: 7/25/21
+*/
+
 #ifndef _DEVICES_VGA
 #define _DEVICES_VGA
 

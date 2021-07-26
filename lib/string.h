@@ -1,3 +1,9 @@
+/*	string.h
+
+	Author: Joseph Shimel
+	Date: 7/25/21
+*/
+
 #ifndef _LIB_STRING_H
 #define _LIB_STRING_H
 

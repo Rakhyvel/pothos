@@ -1,3 +1,11 @@
+/*	vga.c
+
+	Contains some code for working with VGA in text mode
+
+	Author: Joseph Shimel
+	Date: 7/25/21
+*/
+
 #include "./vga.h"
 #include "../lib/string.h"
 

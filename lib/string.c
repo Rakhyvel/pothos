@@ -1,3 +1,9 @@
+/*	string.c
+
+	Author: Joseph Shimel
+	Date: 7/25/21
+*/
+
 #include "./string.h"
 
 size_t strlen(const char* str) 

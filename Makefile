@@ -18,6 +18,12 @@ run: os-image.bin
 	qemu-system-i386 -kernel os-image.bin
 	make clean
 
+# Unused until I figure out how to install iso burning tool
+pothos.iso: os-image.bin
+	cp myos.bin isodir/boot/myos.bin
+	cp grub.cfg isodir/boot/grub/grub.cfg
+	grub-mkrescue -o myos.iso isodir
+
 clean:
 	rm -rf boot/boot.o ${OBJ} os-image.bin
 

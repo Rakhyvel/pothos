@@ -39,6 +39,7 @@ size_t terminal_column;
 uint8_t terminal_color;
 uint16_t* terminal_buffer;
 
+uint16_t VGA_Entry(unsigned char uc, uint8_t color);
 void VGA_TerminalInitialize(void);
 void VGA_TerminalSetColor(uint8_t color);
 void VGA_TerminalPutEntryAt(char c, uint8_t color, size_t x, size_t y);

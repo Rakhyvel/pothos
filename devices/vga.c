@@ -14,7 +14,7 @@ static inline uint8_t VGA_EntryColor(enum VGA_Color fg, enum VGA_Color bg)
 	return fg | bg << 4;
 }
  
-static inline uint16_t VGA_Entry(unsigned char uc, uint8_t color) 
+inline uint16_t VGA_Entry(unsigned char uc, uint8_t color) 
 {
 	return (uint16_t) uc | (uint16_t) color << 8;
 }

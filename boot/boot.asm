@@ -104,4 +104,5 @@ start_in_higher_half:
 
     call  main                  ; call kernel proper
 .1: hlt                          ; halt machine should kernel return
+    mov word [0xC00B8000], 0x0769
     jmp .1

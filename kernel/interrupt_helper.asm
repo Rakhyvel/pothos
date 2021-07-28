@@ -5,30 +5,30 @@
 
 ; Common ISR code
 isr_common_stub:
-    cli
-    ; 1. Save CPU state
-	pusha ; Pushes edi,esi,ebp,esp,ebx,edx,ecx,eax
-	mov ax, ds ; Lower 16-bits of eax = ds.
-	push eax ; save the data segment descriptor
-	mov ax, 0x10  ; kernel data segment descriptor
-	mov ds, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
-	
-    ; 2. Call C handler
-	call Interrupt_ISRHandler
-	
-    ; 3. Restore state
-	pop eax 
-	mov ds, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
-	popa
-	add esp, 8 ; Cleans up the pushed error code and pushed ISR number
-	sti
-	iret ; pops 5 things at once: CS, EIP, EFLAGS, SS, and ESP
+temp_exception_handler:
+    pusha                           ; push eax, ebx, ecx, edx, esi, edi, ebp, esp
+    mov ax, ds
+    push eax                        ; save ds
+    
+    mov ax, 0x10                    ; load kernel data segment
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+
+    call Interrupt_ISRHandler
+
+    pop ebx                         ; restore original data segment
+    mov ds, bx
+    mov es, bx
+    mov fs, bx
+    mov gs, bx
+
+    popa
+    add esp, 0x8                    ; rebalance stack(pop err code and exception number)
+
+    sti                             ; re-enable interrupts
+    iret
 
 ; Common IRQ code. Identical to ISR code except for the 'call' 
 ; and the 'pop ebx'
@@ -36,21 +36,26 @@ irq_common_stub:
     pusha 
     mov ax, ds
     push eax
+
     mov ax, 0x10
     mov ds, ax
     mov es, ax
     mov fs, ax
     mov gs, ax
+    
     call Interrupt_IRQHandler ; Different than the ISR code
+
     pop ebx  ; Different than the ISR code
     mov ds, bx
     mov es, bx
     mov fs, bx
     mov gs, bx
+
     popa
-    add esp, 8
+    add esp, 0x8
+
     sti
-    iret 
+    iret
 	
 ; We don't get information about which interrupt was caller
 ; when the handler is run, so we will need to have a different handler

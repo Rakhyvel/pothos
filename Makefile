@@ -1,6 +1,6 @@
-C_SOURCES = $(wildcard boot/*.c devices/*.c lib/*.c threads/*.c)
-HEADERS = $(wildcard boot/*.h devices/*.h lib/*.h threads/*.h)
-OBJ = ${C_SOURCES:.c=.o} boot/boot.o threads/interrupt_table.o boot/gdt_helper.o
+C_SOURCES = $(wildcard boot/*.c devices/*.c lib/*.c threads/*.c kernel/*.c)
+HEADERS = $(wildcard boot/*.h devices/*.h lib/*.h threads/*.h kernel/*.h)
+OBJ = ${C_SOURCES:.c=.o} boot/boot.o kernel/interrupt_helper.o kernel/gdt_helper.o
 
 os-image.bin:  ${OBJ}
 	i686-elf-gcc -T boot/linker.ld -o os-image.bin -ffreestanding -O2 -nostdlib ${OBJ} -lgcc
@@ -11,7 +11,7 @@ boot/kernel.o: ${OBJ}
 %.o: %.asm
 	nasm -felf32 $< -o $@
 
-%.o: %.c ${HEADERS} threads/interrupt_table.o
+%.o: %.c ${HEADERS}
 	i686-elf-gcc -c $< -o $@ -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
 run: os-image.bin

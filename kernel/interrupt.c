@@ -1,5 +1,5 @@
 #include "./interrupt.h"
-#include "./io.h"
+#include "../devices/io.h"
 #include "../lib/stdio.h"
 
 isr_t interrupt_handlers[256];
@@ -136,11 +136,15 @@ char *exception_messages[] = {
     Called after an ISR interrupt is raised. Not much to do, just print an
     error message */
 void Interrupt_ISRHandler(registers_t r) {
-    char* c = " ";
-    c[0] = '0' + r.err_code;
-    printf(c);
-    printf(exception_messages[r.int_no]);
-    printf("\n");
+    if(r.int_no < 32) {
+        printf("EXCEPTION: ");
+        printf(exception_messages[r.int_no]);
+        for(;;);
+    }
+    if(interrupt_handlers[r.int_no] != NULL) {
+         isr_t handler = interrupt_handlers[r.int_no];
+         handler(r);
+    }
 }
 
 /*
@@ -157,7 +161,9 @@ void Interrupt_IRQHandler(registers_t r) {
 	// Handle the interrupt in a more modular way
 	if (interrupt_handlers[r.int_no] != 0) {
 		isr_t handler = interrupt_handlers[r.int_no];
-		handler(r);
+        if(handler) {
+		    handler(r);
+        }
 	}
 }
 

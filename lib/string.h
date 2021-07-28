@@ -12,5 +12,6 @@
 size_t strlen(const char* str);
 void *memcpy(void *dest, const void *src, size_t n);
 void *memset(char *s, int c, size_t n);
+void itoa(char *buf, unsigned long int n, int base);
 
 #endif

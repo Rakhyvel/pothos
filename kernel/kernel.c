@@ -7,17 +7,27 @@
 */
 
 #include "./gdt.h"
-#include "../threads/interrupt.h"
+#include "./interrupt.h"
 #include "../devices/vga.h"
 #include "../devices/timer.h"
+#include "../devices/keyboard.h"
 #include "../lib/stdio.h"
+#include "../lib/string.h"
+
+int sema;
 
 int main() 
 {
+	sema = 1;
 	VGA_TerminalInitialize();
 	GDT_Init();
 	Interrupt_InstallISRs();
-	__asm__  ("div %0" :: "r"(0));
+	Timer_Init(60);
+	//Keyboard_Init();
+
+	while (1) {
+		//printf("H\n");
+	}
 
 	return 0;
 }

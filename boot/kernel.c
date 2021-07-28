@@ -6,16 +6,18 @@
 	Date: 7/25/21
 */
 
+#include "./gdt.h"
+#include "../threads/interrupt.h"
 #include "../devices/vga.h"
+#include "../devices/timer.h"
+#include "../lib/stdio.h"
 
 int main() 
 {
 	VGA_TerminalInitialize();
- 
-	char* str = "Hello, world!\n";
-	for(int i = 0; i < 26; i++) {
-		str[4] = i + '0';
-		VGA_TerminalWriteString(str);
-	}
+	GDT_Init();
+	Interrupt_InstallISRs();
+	__asm__  ("div %0" :: "r"(0));
+
 	return 0;
 }

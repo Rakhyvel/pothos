@@ -30,3 +30,10 @@ void* memcpy(void *dst_, const void *src_, size_t size)
     }
 	return dst;
 }
+
+void *memset(char* s, int c, size_t n) {
+	for(int i = 0; i < n; i++) {
+		s[i] = c;
+	}
+	return s;
+}

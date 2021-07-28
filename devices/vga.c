@@ -50,7 +50,8 @@ void VGA_TerminalPutChar(char c)
         ++terminal_row;
         terminal_column = 0;
     } else {
-        VGA_TerminalPutEntryAt(c, terminal_color, terminal_column, terminal_row);
+		const size_t index = terminal_row * VGA_WIDTH + terminal_column;
+		terminal_buffer[index] = (uint16_t) c | (uint16_t) terminal_color << 8;
         if (++terminal_column > VGA_WIDTH) {
 			++terminal_row;
             terminal_column = 0;

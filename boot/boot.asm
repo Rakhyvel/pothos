@@ -64,6 +64,10 @@ _start:
     mov ecx, cr0
     or ecx, 0x80000000                          ; Set PG bit in CR0 to enable paging.
     mov cr0, ecx
+
+    mov eax, cr0
+    or eax, 1
+    mov cr0, eax
  
     ; Start fetching instructions in kernel space.
     ; Since eip at this point holds the physical address of this command (approximately 0x00100000)
@@ -73,12 +77,19 @@ _start:
     jmp ecx                                                     ; NOTE: Must be absolute jump!
  
 start_in_higher_half:
+    mov ax, 0x10
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+    mov ss, ax
+
     ; Unmap the identity-mapped first 4MB of physical address space. It should not be needed
     ; anymore.
+
     mov dword [boot_page_directory], 0
     invlpg [0]
 
-    lgdt [gdt_descriptor]
  
     ; NOTE: From now on, paging should be enabled. The first 4MB of physical address space is
     ; mapped starting at KERNEL_VIRTUAL_BASE. Everything is linked to this address, so no more
@@ -90,38 +101,7 @@ start_in_higher_half:
     ; pass Multiboot info structure -- WARNING: This is a physical address and may not be
     ; in the first 4MB!
     push ebx
- 
+
     call  main                  ; call kernel proper
-    hlt                          ; halt machine should kernel return
-
-
-gdt_start: 			; label needed to compute sizes and jumps
-	; the GDT starts with a null 8-byte
-	dd 0x0
-	dd 0x0
-
-; GDT for code segment. base = 0x00000000, length = 0xfffff
-; I'm straight up just copying the github
-gdt_code:
-	dw 0xffff		; segment length, bits 0-15
-	dw 0x0			; segment base, bits 0-15
-	db 0x0			; segment base, bits 16-23
-    db 10011010b 	; flags (8 bits)
-    db 11001111b 	; flags (4 bits) + segment length, bits 16-19
-    db 0x0       	; segment base, bits 24-31
-
-; GDT for data segment. base and length identical to code segment
-; some flags changed, again, refer to os-dev.pdf
-gdt_data:
-    dw 0xffff
-    dw 0x0
-    db 0x0
-    db 10010010b
-    db 11001111b
-    db 0x0
-
-gdt_end:
-
-gdt_descriptor:
-	dw gdt_end - gdt_start - 1	; size (16 bit), always one less of its true size
-	dd gdt_start
+.1: hlt                          ; halt machine should kernel return
+    jmp .1

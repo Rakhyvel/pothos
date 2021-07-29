@@ -38,7 +38,7 @@ typedef struct {
    uint32_t eip, cs, eflags, useresp, ss; // Pushed by the processor automatically
 } registers_t;
 
-typedef void (*isr_t)(registers_t);
+typedef void (*isr_t)(registers_t*);
 
 #define IDT_ENTRIES 256
 idt_gate_t idt[IDT_ENTRIES];

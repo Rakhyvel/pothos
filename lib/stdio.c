@@ -2,7 +2,7 @@
 #include "./string.h"
 #include "../devices/vga.h"
 
-void printf(char* msg) {
+void printf(const char* msg) {
     int size = strlen(msg);
 	for (size_t i = 0; i < size; i++) {
 		VGA_TerminalPutChar(msg[i]);

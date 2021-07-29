@@ -33,28 +33,30 @@ temp_exception_handler:
 ; Common IRQ code. Identical to ISR code except for the 'call' 
 ; and the 'pop ebx'
 irq_common_stub:
-    pusha 
+    pusha                           ; push eax, ebx, ecx, edx, esi, edi, ebp, esp
     mov ax, ds
-    push eax
+    push eax                        ; save ds
 
-    mov ax, 0x10
+    mov ax, 0x10                    ; load kernel data segment
     mov ds, ax
     mov es, ax
     mov fs, ax
     mov gs, ax
-    
-    call Interrupt_IRQHandler ; Different than the ISR code
 
-    pop ebx  ; Different than the ISR code
+    push esp
+    call Interrupt_IRQHandler ; Different than the ISR code
+    pop esp
+
+    pop ebx                         ; restore original data segment
     mov ds, bx
     mov es, bx
     mov fs, bx
     mov gs, bx
 
     popa
-    add esp, 0x8
+    add esp, 0x8                    ; rebalance stack(pop err code and exception number)
 
-    sti
+    sti                             ; re-enable interrupts
     iret
 	
 ; We don't get information about which interrupt was caller

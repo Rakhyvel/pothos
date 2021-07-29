@@ -14,19 +14,15 @@
 #include "../lib/stdio.h"
 #include "../lib/string.h"
 
-int sema;
-
 int main() 
 {
-	sema = 1;
 	VGA_TerminalInitialize();
 	GDT_Init();
 	Interrupt_InstallISRs();
-	Timer_Init(60);
-	//Keyboard_Init();
+	Timer_Init(1);
+	Keyboard_Init();
 
 	while (1) {
-		//printf("H\n");
 	}
 
 	return 0;

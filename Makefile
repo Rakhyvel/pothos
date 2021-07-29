@@ -3,16 +3,16 @@ HEADERS = $(wildcard boot/*.h devices/*.h lib/*.h threads/*.h kernel/*.h)
 OBJ = ${C_SOURCES:.c=.o} boot/boot.o kernel/interrupt_helper.o kernel/gdt_helper.o
 
 os-image.bin:  ${OBJ}
-	i686-elf-gcc -T boot/linker.ld -o os-image.bin -ffreestanding -O2 -nostdlib ${OBJ} -lgcc
+	i686-elf-gcc -T boot/linker.ld -o os-image.bin -ffreestanding -nostdlib ${OBJ} -lgcc
 
 boot/kernel.o: ${OBJ}
-	i686-elf-gcc -c boot/kernel.c -o boot/kernel.o -std=gnu99 -ffreestanding -O1 -Wall -Wextra
+	i686-elf-gcc -c boot/kernel.c -o boot/kernel.o -std=gnu99 -ffreestanding -Wall -Wextra
 
 %.o: %.asm
 	nasm -felf32 $< -o $@
 
 %.o: %.c ${HEADERS}
-	i686-elf-gcc -c $< -o $@ -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+	i686-elf-gcc -c $< -o $@ -std=gnu99 -ffreestanding -Wall -Wextra
 
 run: os-image.bin
 	qemu-system-i386 -kernel os-image.bin

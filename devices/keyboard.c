@@ -2,10 +2,8 @@
 #include "./io.h"
 #include "../kernel/interrupt.h"
 #include "../lib/stdio.h"
-#include "../kernel/kernel.h"
-#include "../devices/vga.h"
 
-void Keyboard_Handler(registers_t r)
+void Keyboard_Handler(registers_t* r)
 {
     int i, scancode;
     //get scancode with "timeout"
@@ -22,7 +20,7 @@ void Keyboard_Handler(registers_t r)
         }
         else {
             // Key down
-            sema = !sema;
+            printf("Hello, world!\n");
         }
     }
 }

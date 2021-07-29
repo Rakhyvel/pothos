@@ -143,7 +143,7 @@ void Interrupt_ISRHandler(registers_t r) {
     }
     if(interrupt_handlers[r.int_no] != NULL) {
          isr_t handler = interrupt_handlers[r.int_no];
-         handler(r);
+         handler(&r);
     }
 }
 
@@ -151,20 +151,17 @@ void Interrupt_ISRHandler(registers_t r) {
     Called from interrupt_table.asm after an IRQ is raised. Checks the 
     dispatch table of function pointers, calls the function with the registered 
     IRQ number. */
-void Interrupt_IRQHandler(registers_t r) {
+void Interrupt_IRQHandler(registers_t* r) {
 	// Need to send EOI to PICs or they will not send another interrupt
-	if (r.int_no >= 40) {
+	if (r->int_no >= 40) {
 		IO_OutByte(0xA0, 0x20); // slave
 	}
 	IO_OutByte(0x20, 0x20); // master
 
-	// Handle the interrupt in a more modular way
-	if (interrupt_handlers[r.int_no] != 0) {
-		isr_t handler = interrupt_handlers[r.int_no];
-        if(handler) {
-		    handler(r);
-        }
-	}
+    if(interrupt_handlers[r->int_no] != NULL) {
+        isr_t handler = interrupt_handlers[r->int_no];
+        handler(r);
+    }
 }
 
 /*

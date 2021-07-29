@@ -4,24 +4,11 @@
 
 #include "../lib/stdio.h"
 #include "../lib/string.h"
-#include "../kernel/kernel.h"
-#include "../devices/vga.h"
 
 int ticks;
 
-void TerminalPutEntryAt(char c, uint8_t color, size_t x, size_t y) 
-{
-	const size_t index = y * VGA_WIDTH + x;
-	terminal_buffer[index] = VGA_Entry(c, color);
-}
-
-/*
-    If you call printf from this function, it raises a page fault
-    Perhaps I just live with it? Maybe its because its an interrupt? */
-void Timer_callback(registers_t regs) {
+void Timer_callback(registers_t* regs) {
     ticks++;
-	sema = !sema;
-	VGA_TerminalPutEntryAt('X', VGA_COLOR_WHITE, 2, 2);
 }
 
 void Timer_Init(uint32_t freq) {

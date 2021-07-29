@@ -13,17 +13,26 @@
 #include "../devices/keyboard.h"
 #include "../lib/stdio.h"
 #include "../lib/string.h"
+#include "../boot/multiboot.h"
+#include "../mem/pmm.h"
 
-int main() 
+int main(multiboot_info_t* info) 
 {
-	VGA_TerminalInitialize();
+	VGA_Init();
 	GDT_Init();
-	Interrupt_InstallISRs();
+	IDT_Init();
+
+	PMM_Init();
+
 	Timer_Init(1);
 	Keyboard_Init();
 
-	while (1) {
-	}
+	printf("PothOS 0.0\nKernel ends at: 0x");
+	char lol[255];
+	itoa(lol, &end_kernel, 16);
+	printf(lol);
+	printf("\n> ");
 
+	for(;;);
 	return 0;
 }

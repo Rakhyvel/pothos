@@ -1,4 +1,5 @@
 #include "./timer.h"
+#include "../kernel/idt.h"
 #include "../kernel/interrupt.h"
 #include "../devices/io.h"
 

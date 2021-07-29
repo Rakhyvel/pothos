@@ -1,5 +1,5 @@
-C_SOURCES = $(wildcard boot/*.c devices/*.c lib/*.c threads/*.c kernel/*.c)
-HEADERS = $(wildcard boot/*.h devices/*.h lib/*.h threads/*.h kernel/*.h)
+C_SOURCES = $(wildcard boot/*.c devices/*.c lib/*.c threads/*.c kernel/*.c mem/*.c)
+HEADERS = $(wildcard boot/*.h devices/*.h lib/*.h threads/*.h kernel/*.h mem/*.h)
 OBJ = ${C_SOURCES:.c=.o} boot/boot.o kernel/interrupt_helper.o kernel/gdt_helper.o
 
 os-image.bin:  ${OBJ}

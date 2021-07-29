@@ -23,9 +23,9 @@ void GDT_Init() {
         Only differ at the fifth bit(counting from least insignificant bit), 0 means it's a data segment.
     */
     GDT_SetEntry(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
-    // User code and data segments, only differ in ring number(ring 3)
-    GDT_SetEntry(3, 0, 0xFFFFFFFF, 0xFA, 0xCF);
-    GDT_SetEntry(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);
+    // User code and data segments, copies of kernel data and code
+    GDT_SetEntry(3, 0, 0xFFFFFFFF, 0x9A, 0xCF);
+    GDT_SetEntry(4, 0, 0xFFFFFFFF, 0x92, 0xCF);
 
     GDT_Flush((uint32_t)(&gdt_ptr));
 }

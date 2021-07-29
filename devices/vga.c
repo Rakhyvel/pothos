@@ -19,7 +19,7 @@ inline uint16_t VGA_Entry(unsigned char uc, uint8_t color)
 	return (uint16_t) uc | (uint16_t) color << 8;
 }
  
-void VGA_TerminalInitialize(void) 
+void VGA_Init(void) 
 {
 	terminal_row = 0;
 	terminal_column = 0;

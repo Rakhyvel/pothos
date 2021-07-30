@@ -8,6 +8,7 @@
 
 #include "./vga.h"
 #include "../lib/string.h"
+#include "../devices/io.h"
 
 static inline uint8_t VGA_EntryColor(enum VGA_Color fg, enum VGA_Color bg) 
 {
@@ -43,6 +44,16 @@ void VGA_TerminalPutEntryAt(char c, uint8_t color, size_t x, size_t y)
 	const size_t index = y * VGA_WIDTH + x;
 	terminal_buffer[index] = VGA_Entry(c, color);
 }
+
+void update_cursor(int x, int y)
+{
+	uint16_t pos = y * VGA_WIDTH + x;
+ 
+	IO_OutByte(0x3D4, 0x0F);
+	IO_OutByte(0x3D5, (uint8_t) (pos & 0xFF));
+	IO_OutByte(0x3D4, 0x0E);
+	IO_OutByte(0x3D5, (uint8_t) ((pos >> 8) & 0xFF));
+}
  
 void VGA_TerminalPutChar(char c) 
 {
@@ -61,6 +72,7 @@ void VGA_TerminalPutChar(char c)
 		memcpy(terminal_buffer, terminal_buffer + VGA_WIDTH, 4 * VGA_WIDTH * VGA_HEIGHT - 2);
 		terminal_row--;
 	}
+	update_cursor(terminal_column, terminal_row);
 }
  
 void VGA_TerminalWrite(const char* data, size_t size) 

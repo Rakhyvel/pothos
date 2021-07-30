@@ -33,6 +33,8 @@ int main(multiboot_info_t* info)
 	printf(lol);
 	printf("\n> ");
 
+	PMM_AllocBlock();
+
 	for(;;);
 	return 0;
 }

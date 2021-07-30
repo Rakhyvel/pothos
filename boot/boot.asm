@@ -104,6 +104,6 @@ start_in_higher_half:
 
     call  main                  ; call kernel proper
 .1: hlt                          ; halt machine should kernel return
-    mov dword [0xC00B8000], 0x4f6e4f65 ; print out 'end.' to screen in red/white text
-    mov dword [0xC00B8004], 0x4f2e4f64
+    mov dword [0xC00B8000], 0xCF6ECF65 ; print out 'end.' to screen in red/white text
+    mov dword [0xC00B8004], 0xCF2ECF64
     jmp .1

@@ -14,5 +14,7 @@
 extern uint32_t end_kernel; // Defined in linker.ld, end of the kernel
 
 void PMM_Init();
+uint32_t PMM_AllocBlock();
+void PMM_FreeBlock(uint32_t blockNumber);
 
 #endif

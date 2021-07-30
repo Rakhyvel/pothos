@@ -26,7 +26,7 @@ void PMM_Init() {
     blockStart = (uint8_t*)BLOCK_ALIGN((uint32_t)(bitmap + nBlocks));
 }
 
-uint32_t PMM_FirstFreeBlock() {
+static uint32_t PMM_FirstFreeBlock() {
     // Start loop at blockStart
     for(int i = 0; i < nBlocks; i++) {
         if(!ISSET(i)) {

@@ -10,16 +10,26 @@
 #include "../lib/string.h"
 #include "../devices/io.h"
 
+/*	Combines a foreground and background VGA text mode color
+
+	@param fg	Foreground color
+	@param bg	Background color
+	@return		Combined VGA text mode color */
 static inline uint8_t VGA_EntryColor(enum VGA_Color fg, enum VGA_Color bg) 
 {
 	return fg | bg << 4;
 }
  
+/*	Combines a color and character to get a VGA data short
+
+	@param uc		An unsigned char
+	@param color	VGA color byte */
 inline uint16_t VGA_Entry(unsigned char uc, uint8_t color) 
 {
 	return (uint16_t) uc | (uint16_t) color << 8;
 }
- 
+
+/*	Clears the VGA video memory, and sets cursor to top-left */
 void VGA_Init(void) 
 {
 	terminal_row = 0;
@@ -33,18 +43,31 @@ void VGA_Init(void)
 		}
 	}
 }
- 
+
+/* 	Sets terminal color
+	
+	@param color	 Color to print to screen */
 void VGA_TerminalSetColor(uint8_t color) 
 {
 	terminal_color = color;
 }
- 
+
+/*	Puts a character on the screen
+
+	@param c		Character to put on screen
+	@param color	Color for character
+	@param x		X coordinate for character
+	@param y		Y coordinate for character */
 void VGA_TerminalPutEntryAt(char c, uint8_t color, size_t x, size_t y) 
 {
 	const size_t index = y * VGA_WIDTH + x;
 	terminal_buffer[index] = VGA_Entry(c, color);
 }
 
+/*	Updates cursor on screen to a given value
+
+	@param x		X coordinate for cursor
+	@param y		Y coordinate for cursor */
 void update_cursor(int x, int y)
 {
 	uint16_t pos = y * VGA_WIDTH + x;
@@ -55,6 +78,9 @@ void update_cursor(int x, int y)
 	IO_OutByte(0x3D5, (uint8_t) ((pos >> 8) & 0xFF));
 }
  
+/*	Puts a character on the screen
+
+	@param c		Character to put on screen*/
 void VGA_TerminalPutChar(char c) 
 {
     if(c == '\n') {
@@ -73,15 +99,4 @@ void VGA_TerminalPutChar(char c)
 		terminal_row--;
 	}
 	update_cursor(terminal_column, terminal_row);
-}
- 
-void VGA_TerminalWrite(const char* data, size_t size) 
-{
-	for (size_t i = 0; i < size; i++)
-		VGA_TerminalPutChar(data[i]);
-}
- 
-void VGA_TerminalWriteString(const char* data) 
-{
-	VGA_TerminalWrite(data, strlen(data));
 }

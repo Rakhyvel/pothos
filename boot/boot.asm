@@ -1,3 +1,6 @@
+; Author:   Joseph Shimel
+; Date:     7/25/21
+
 global _start                          ; Make entry point visible to linker.
 extern main                            ; _main is defined elsewhere
  

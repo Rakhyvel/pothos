@@ -44,7 +44,5 @@ void VGA_Init(void);
 void VGA_TerminalSetColor(uint8_t color);
 void VGA_TerminalPutEntryAt(char c, uint8_t color, size_t x, size_t y);
 void VGA_TerminalPutChar(char c);
-void VGA_TerminalWrite(const char* data, size_t size);
-void VGA_TerminalWriteString(const char* data);
 
 #endif

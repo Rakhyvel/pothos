@@ -1,3 +1,6 @@
+/*  Author: Joseph Shimel
+    Date:   7/27/21 */
+    
 #include "./pic.h"
 #include "./io.h"
 
@@ -27,9 +30,9 @@ void PIC_Init() {
     IO_OutByte(PIC2_DATA, 0);
 }
 
-/*
- * Tell PIC interrupt is handled
- * */
+/*  Sends aknowledgement to the PIC 
+
+    @param irq  IRQ of interrupt to acknowledge */
 void PIC_IRQAcknowledge(uint8_t irq) {
     if(irq >= 0x28)
         IO_OutByte(PIC2, PIC_EOI);

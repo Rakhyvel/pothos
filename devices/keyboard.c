@@ -1,3 +1,6 @@
+/*  Author: Joseph Shimel
+    Date:   7/28/21 */
+    
 #include "keyboard.h"
 #include "./io.h"
 #include "../kernel/idt.h"
@@ -43,6 +46,9 @@ char kbdus[128] = {
     0,  /* All other keys are undefined */
 };
 
+/*  Handles keyboard interrupts
+
+    @param r    State of registers at the time of the interrupt, unused */
 void Keyboard_Handler(registers_t* r)
 {
     int i, scancode = 0;
@@ -67,6 +73,7 @@ void Keyboard_Handler(registers_t* r)
     }
 }
 
+/*  Registers keyboard interrupt handler */
 void Keyboard_Init() {
     Interrupt_RegisterIRQHandler(IRQ1, &Keyboard_Handler);
 }

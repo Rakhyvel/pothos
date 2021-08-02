@@ -1,9 +1,10 @@
+/*  Author: Joseph Shimel
+    Date:   7/28/21 */
+    
 #include "./idt.h"
 #include "../devices/io.h"
 
-/*
-    Registers entries in the IDT for ISRs, IRQs, and does something with PICs
-    though I'm not sure */
+/*  Initializes the IDT */
 void IDT_Init() {
     IDT_SetGate(0, (uint32_t)isr0);
     IDT_SetGate(1, (uint32_t)isr1);
@@ -71,8 +72,10 @@ void IDT_Init() {
     IDT_Load();
 }
 
-/*
-    Called to add a new row to the IDT along with the special flags needed. */
+/*  Adds a new entry to the IDT
+    
+    @param n        IDT id number
+    @param handler  Function pointer to an interrupt handler */
 void IDT_SetGate(uint32_t n, uint32_t handler) {
     idt[n].low_offset = handler & 0xFFFF;
 	idt[n].sel = KERNEL_CS;
@@ -81,8 +84,7 @@ void IDT_SetGate(uint32_t n, uint32_t handler) {
 	idt[n].high_offset = (handler) >> 16 & 0xFFFF;
 }
 
-/*
-    Called after IDT is created, loads the address IDT into the IDT register */
+/*  Loads the address IDT into the IDT register */
 void IDT_Load() {
     idt_reg.base = (uint32_t) &idt;
 	idt_reg.limit = IDT_ENTRIES * sizeof(idt_gate_t) - 1;

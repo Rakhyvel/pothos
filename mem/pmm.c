@@ -1,9 +1,5 @@
-/*
-Rough outline:
-- Begin at the end of the kernel
-- Have a bitmap for free and used pages
-- Allocate one after the other
-*/
+/*  Author: Joseph Shimel
+    Date:   7/28/21 */
 
 #include <stdint.h>
 #include "pmm.h"
@@ -16,6 +12,7 @@ uint8_t* blockStart;
 uint32_t nBlocks;
 uint32_t bitmapSize;
 
+/*  Initializes the physical memory manager's bitmap */
 void PMM_Init() {
     uint32_t availMem = K * M; // 1 GiB
     nBlocks = availMem / BLOCK_SIZE;
@@ -29,6 +26,9 @@ void PMM_Init() {
     blockStart = (uint8_t*)BLOCK_ALIGN((uint32_t)(bitmap + bitmapSize));
 }
 
+/*  Finds the first unused block
+
+    @return first unused block */
 static uint32_t PMM_FirstFreeBlock() {
     // Start loop at blockStart
     for(int i = 0; i < nBlocks; i++) {
@@ -49,6 +49,9 @@ uint32_t PMM_AllocBlock() {
     return freeBlock;
 }
 
+/*  Sets the bit of a block to make it unused 
+
+    @param blockNumber  The number to set to free */
 void PMM_FreeBlock(uint32_t blockNumber) {
     CLEARBIT(blockNumber);
 }

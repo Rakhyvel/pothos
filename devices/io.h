@@ -1,5 +1,5 @@
-#ifndef _THREADS_IO_H
-#define _THREADS_IO_H
+#ifndef IO_H
+#define IO_H
 
 #include <stddef.h>
 #include <stdint.h>

@@ -1,8 +1,12 @@
+/*  Author: Joseph Shimel
+    Date:   7/27/21 */
+    
 #include "./gdt.h"
 
 gdt_entry_t gdt_entries[NUM_DESCRIPTORS];
 gdt_ptr_t   gdt_ptr;
 
+/*  Initialized the GDT */
 void GDT_Init() {
     gdt_ptr.limit = sizeof(gdt_entries) - 1;
     gdt_ptr.base = (uint32_t)gdt_entries;
@@ -30,6 +34,13 @@ void GDT_Init() {
     GDT_Flush((uint32_t)(&gdt_ptr));
 }
 
+/*  Adds an entry to the GDT 
+
+    @param index    Index of segment
+    @param base     Base of segment
+    @param limit    Limit of segment
+    @param access   Access of segment
+    @param gran     Granularity of segment*/
 void GDT_SetEntry(int index, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran) {
     gdt_entry_t * this = &gdt_entries[index];
 

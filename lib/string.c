@@ -18,6 +18,11 @@ size_t strlen(const char* str)
 	return len;
 }
 
+char *strcpy(char *dest, const char *src) {
+	int length = strlen(dest);
+	memcpy(dest, src, length);
+}
+
 /*	Copies memory from a source to a destination
 
 	@param dst_	Pointer to destination
@@ -77,4 +82,45 @@ void itoa(char *buf, unsigned long int n, int base) {
         buf[j] = buf[i];
         buf[i] = tmp;
     }
+}
+
+int atoi(char * string) {
+    int result = 0;
+    unsigned int digit;
+    int sign;
+
+    while (isspace(*string)) {
+        string += 1;
+    }
+
+    /*
+     * Check for a sign.
+     */
+
+    if (*string == '-') {
+        sign = 1;
+        string += 1;
+    } else {
+        sign = 0;
+        if (*string == '+') {
+            string += 1;
+        }
+    }
+
+    for ( ; ; string += 1) {
+        digit = *string - '0';
+        if (digit > 9) {
+            break;
+        }
+        result = (10*result) + digit;
+    }
+
+    if (sign) {
+        return -result;
+    }
+    return result;
+}
+
+int isspace(char c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r';
 }

@@ -6,4 +6,6 @@
 #define M 1024 * 1024
 #define K 1024
 
+#define NULL 0
+
 #endif

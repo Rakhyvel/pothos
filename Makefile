@@ -15,7 +15,7 @@ boot/kernel.o: ${OBJ}
 	i686-elf-gcc -c $< -o $@ -std=gnu99 -ffreestanding -Wall -Wextra
 
 run: os-image.bin
-	qemu-system-i386 -kernel os-image.bin
+	qemu-system-i386 -serial stdio -kernel os-image.bin
 	make clean
 
 # Unused until I figure out how to install iso burning tool

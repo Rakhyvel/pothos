@@ -16,6 +16,7 @@
 #include "../boot/multiboot.h"
 #include "../mem/pmm.h"
 #include "../mem/paging.h"
+#include "../devices/serial.h"
 
 int main(multiboot_info_t* info) 
 {
@@ -26,11 +27,7 @@ int main(multiboot_info_t* info)
 	PMM_Init();
 	Paging_Init();
 
-	printf("PothOS 0.0\nKernel ends at: 0x");
-	char lol[255];
-	itoa(lol, &end_kernel, 16);
-	printf(lol);
-	printf("\n> ");
+	printf("PothOS 0.0\nRAM: %d bytes\n>", 1096 * M);
 
 	for(;;);
 	return 0;

@@ -18,6 +18,7 @@ KERNEL_PAGE_NUMBER equ (KERNEL_VIRTUAL_BASE >> 22)  ; Page directory index of ke
  
 section .data
 align 0x1000
+global boot_page_directory
 boot_page_directory:
     ; This page directory entry identity-maps the first 4MB of the 32-bit physical address space.
     ; All bits are clear except the following:
@@ -77,13 +78,6 @@ _start:
     jmp ecx                                                     ; NOTE: Must be absolute jump!
  
 start_in_higher_half:
-    mov ax, 0x10
-    mov ds, ax
-    mov es, ax
-    mov fs, ax
-    mov gs, ax
-    mov ss, ax
-
     ; Unmap the identity-mapped first 4MB of physical address space. It should not be needed
     ; anymore.
 

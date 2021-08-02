@@ -3,9 +3,20 @@
 
 #include <stdint.h>
 
+#define PAGE_SIZE 4096
+
+// Alignment related macro
+#define IS_ALIGN(addr) ((((uint32_t)(addr)) | 0xFFFFF000) == 0)
+#define PAGE_ALIGN(addr) ((((uint32_t)(addr)) & 0xFFFFF000) + 0x1000)
+
 // Paging register manipulation macro
 #define SET_PGBIT(cr0) (cr0 = cr0 | 0x80000000)
 #define CLEAR_PSEBIT(cr4) (cr4 = cr4 & 0xffffffef)
+
+// Defone some address calculation macro
+#define PAGEDIR_INDEX(vaddr) (((uint32_t)vaddr) >> 22)
+#define PAGETBL_INDEX(vaddr) ((((uint32_t)vaddr) >>12) & 0x3ff)
+#define PAGEFRAME_INDEX(vaddr) (((uint32_t)vaddr) & 0xfff)
 
 // page_directory_t
 typedef struct page_dir_entry {
@@ -45,12 +56,16 @@ typedef struct page_directory {
     page_table_t * ref_tables[1024];
 } page_directory_t;
 
+// Defined in pmm.c
+extern uint8_t * bitmap;
+extern uint32_t  bitmapSize;
 
-// page_table_t
+// Defined in boot.asm
+extern page_directory_t* boot_page_directory;
 
 void Paging_Init();
+void Paging_AllocatePage(page_directory_t * dir, uint32_t virtual_addr, uint32_t frame, int is_kernel, int is_writable);
 void Paging_AllocateRegion(struct page_directory* dir, uint32_t start_va, uint32_t end_va, int iden_map, int is_kernel, int is_writable);
-void Paging_AllocPage();
 void Paging_SetPageDirectory(struct page_directory* page_dir, uint32_t phys);
 void Paging_Enable();
 
